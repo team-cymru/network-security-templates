@@ -3,7 +3,9 @@
 The Network Time Protocol (NTP) is the de-facto means Internet hosts use to synchronize their clocks.  A reliable and accurate notion of time is important for a number of services, including distributed applications, authentication services, multi-user databases and logging services to name just a few.  The NTP is one of those few systems that sees ubiquitous deployment across systems of all types and sizes.  It is therefore important that the NTP infrastructure is secure and trustworthy.  Negligent NTP configurations can lead to a select set of potential problems, including NTP hosts becoming unwitting participants in reflector and amplification DDoS attacks.  This template provides guidelines for proper and secure operation of the NTP service on a number of different platforms and configurations.
 
 ## ! ! W A R N I N G ! !
+***
 As with all such templates, this one must be modified to fit the specific requirements of the local network(s) and hosts. It is not wise to simply cut and paste without a thorough understanding of each command.
+***
 
 Comments are included with each command. A more thorough understanding of NTP can be obtained from:
 * [Network Time Protocol (NTP) Project](http://www.ntp.org)
