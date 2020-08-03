@@ -158,9 +158,13 @@ In our experience multicast-enabled NTP clients are often setup with no authenti
 
 ### A Note About Border NTP Filtering
 Some networks may consider filtering all or some NTP traffic between their network and others.  This is potentially very troublesome and should only be considered and implemented with a full understanding of the ramifications.  We cannot advocate this action by default, but can offer some guidelines to those who wish to do so.
+
 All packets to/from TCP port 123 should be safe to filter since NTP by design only uses UDP.  This might, however, affect anyone who attempts to setup another application on TCP port 123 for some reason or any possible future extension of NTP that might use TCP.
+
 Filtering packets from your networks to external networks with UDP source port 123 and/or packets to your networks from external networks with UDP destination port 123 will certainly prevent your hosts from communicating as NTP servers to outside entities, but it may also prevent some NTP hosts from acting as NTP clients as well.  We have seen some clients use port 123 for source ports.  Filtering in this scenario then may cause problems for those clients.
+
 If you can ensure your internal hosts will only act as clients and all legitimate clients will use an unprivileged client port selection strategy you could probably apply the above aforementioned filter. We would recommend logging or monitoring the filters to assist with troubleshooting should it be necessary.  Also, use your systems&#8217;s built in NTP monitoring capabilities to ensure all your NTP client systems remain in sync.
+
 If you block all UDP 123 traffic so that no clients may talk to external servers, you should ensure all your internal hosts are setup to use one or more internal NTP servers.  Since many system components rely on an accurate notation of time and most use NTP to do so, it is important to provide this service.  Note, except for the most limited and restrictive of networks, we do not find it necessary to completely block NTP for all your hosts as long as those hosts can be secured in the kinds of ways suggested in the template configs above.
 
 ### References
