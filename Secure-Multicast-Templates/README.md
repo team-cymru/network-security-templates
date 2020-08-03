@@ -4,7 +4,9 @@ Internet multicast introduces a range of new security threats to a network. Thes
 
 
 ## ! ! W A R N I N G ! !
+***
 As with all such templates, this one must be modified to fit the specific requirements of the local network(s) and hosts. It is not wise to simply cut and paste without a thorough understanding of each command.
+***
 
 ### Questions, Comments, Suggestions
 Feedback is both welcome and encouraged! Please send any correspondence to
@@ -18,24 +20,24 @@ Our thanks to Lenny Giuliano @ Juniper Networks for authoring this document and 
 Originally, multicast deployment recommendations focused on filtering certain groups that should not be leaked into or out of a network. Some of these groups are protocol related, some are from legacy applications, and some are administratively scoped. Examples of these groups include:
 
 
-224.0.1.2/32 SGI-Dogfight
-224.0.1.3/32 RWHOD
-224.0.1.8/32 SUN-NIS
-224.0.1.22/32 SRVLOC 
-224.0.1.24/32 MICROSOFT-DS
-224.0.1.25/32 NBC-PRO
-224.0.1.35/32 SVRLOC-DA
-224.0.1.39/32 AUTORP-Announce
-224.0.1.40/32 AUTORP-Discovery
-224.0.1.60/32 HP-Device-Discovery
-224.0.2.1/32 RWHO
-224.0.2.2/32 SUN-RPC
-224.77.0.0/16 Norton-Ghost
-226.77.0.0/16 Norton-Ghost
-225.1.2.3/32 Altiris
-229.55.150.208/32 Norton-Ghost
-234.42.42.40/30 Phoenix/StorageSoft ImageCast
-239.0.0.0/8 Administratively Scoped
+	224.0.1.2/32 SGI-Dogfight
+	224.0.1.3/32 RWHOD
+	224.0.1.8/32 SUN-NIS
+	224.0.1.22/32 SRVLOC 
+	224.0.1.24/32 MICROSOFT-DS
+	224.0.1.25/32 NBC-PRO
+	224.0.1.35/32 SVRLOC-DA
+	224.0.1.39/32 AUTORP-Announce
+	224.0.1.40/32 AUTORP-Discovery
+	224.0.1.60/32 HP-Device-Discovery
+	224.0.2.1/32 RWHO
+	224.0.2.2/32 SUN-RPC
+	224.77.0.0/16 Norton-Ghost
+	226.77.0.0/16 Norton-Ghost
+	225.1.2.3/32 Altiris
+	229.55.150.208/32 Norton-Ghost
+	234.42.42.40/30 Phoenix/StorageSoft ImageCast
+	239.0.0.0/8 Administratively Scoped
           
 
 In the past, a list of these unwanted groups was tracked and documented in draft-ietf-mboned-ipv4-mcast-bcp as providers discovered traffic that should not have been on the Internet, but that document has long since expired. 
