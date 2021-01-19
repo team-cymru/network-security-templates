@@ -143,7 +143,7 @@ From within these settings select your desired options. Similar to the CLI confi
 
 Populate the Address box with the 'Address' section with the IP Address of NimbusTM, the rest of the options can be set to match the image below. After all sections are filled out click 'Apply' and flows will be sent to your NimbusTM instance.
 
-<img src="MikroTik-NetFlow-Monitoring.png">
+![](Mikrotik-Netflow-Monitoring.png)
 
 ***
 
