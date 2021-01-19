@@ -137,13 +137,14 @@ MikroTik provides a **print** function that can be used to verfy the above comma
 
 From within these settings select your desired options. Similar to the CLI configuration you can specify some combination of interfaces or all interfaces. One settings are coinfigured click 'Apply'
 
-<img src="MikroTik-NetFlow-Reporting.png">
+![](images/MikroTik-NetFlow-Reporting.jpg)
+
 
 ### Step 2 Navigate to Targets 
 
 Populate the Address box with the 'Address' section with the IP Address of NimbusTM, the rest of the options can be set to match the image below. After all sections are filled out click 'Apply' and flows will be sent to your NimbusTM instance.
 
-![](Mikrotik-Netflow-Monitoring.png)
+![](images/Mikrotik-Netflow-Monitoring.jpg)
 
 ***
 
