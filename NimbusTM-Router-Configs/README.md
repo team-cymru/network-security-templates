@@ -162,7 +162,7 @@ router(config-if)# flow ipv4 monitor NimbusMonitorV4 sampler NimbusSampler ingre
 router(config-if)# flow ipv6 monitor NimbusMonitorV6 sampler NimbusSampler ingress
 
 ```
-#### Verification (Optional)
+#### Verification 
 
 ```
 
@@ -384,7 +384,7 @@ set interfaces interface-name-2 unit 0 family inet sampling input
 set interfaces interface-name-2 unit 0 family inet6 sampling input
 
 ```
-### Verification (Optional)
+### Verification 
 
 Juniper offers a show services accounting flow command that can be used to verify traffic is being sent, if you run this command a few times you can verify that the flow bytes value is incrementing, which indicates flows are being sent. 
 
