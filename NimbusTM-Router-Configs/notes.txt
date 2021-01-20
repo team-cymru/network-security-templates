@@ -1,5 +1,0 @@
-Run ip netstream sampler { fix-packets packet-interval | fix-time time-interval | random-packets packet-interval | random-time time-interval } { inbound | outbound }
-
-Packet sampling is configured on the interface.
-
-By default, the packet-based regular sampling is used. The default packet sampling rate is 100.
