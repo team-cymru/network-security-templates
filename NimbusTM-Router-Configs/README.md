@@ -50,6 +50,7 @@ For the most part Netflow is transmitted via UDP, for NimbusTM the default port 
     * [Juniper IPFIX](#Juniper-IPFIX-Configuration)
 * [Cisco](###Cisco-Devices)
     * [IOS-XR](###IOS-XR)
+* [Huawei](###Huawei)
 
 
 ***
@@ -410,6 +411,55 @@ router(config-if)# flow ipv6 monitor NimbusMonitorV6 sampler NimbusSampler ingre
  show flow exporter-map NimbusTM
 
 ```
+
+# Huawei
+
+## Supported Devices 
+
+Most Huawei devices provide support for Netstream, instead of composing a list of each model it is reccomended to search for you model directly to verify support for the technology. Here is a useful link for CE devices: <a href="https://support.huawei.com/enterprise/en/doc/EDOC1000060766/a4d5e426/which-ce-switches-suppoNE40ENE20ENE80ECE12800rt-netstream">Cloud Engine Netstream Support</a>
+
+* Various NE models
+* Various CE models
+
+## Directory Structure
+
+## Configuration Guide
+
+### Step 1 
+
+Configure global commands for the netstream process Interface_IP and NimbutTM_IP_Address are examples used in this configuration. The Interface IP needs to be modified to be the IP Address of the interface that will export the flow data, NimbutTM_IP_Address must be modified to that of your NimbusTM instance. 
+
+Configure timeouts and Flow Version 
+```
+
+ip netstream timeout active 1
+ip netstream timeout inactive 15
+ip netstream export version 9
+ip netstream export source <Interface_IP>
+ip netstream export host  <NimbutTM_IP_Address> 8888
+
+```
+
+### Step 2 
+```
+
+# this command is only necessary if you run VRP >= 5.0
+# it will store interface indices in 32bit counters (as SNMP does) instead of 16bit.
+ip netstream export index-switch 32
+
+ip netstream export template timeout-rate 1
+ip netstream sampler fix-packets {{device_sample_rate}} inbound
+ip netstream export source {{device_sending_ip}}
+# Ship flow records to KProxy
+# default KProxy port for flow records ingest is 9995
+# update the next line with another port if your KProxy instance uses a custom-set port
+ip netstream export host {{kentik_flow_proxy_IP}} 9995
+
+```
+
+***
+
+
 
 
 ***
