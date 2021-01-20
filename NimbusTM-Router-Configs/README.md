@@ -107,7 +107,8 @@ router(config)# flow monitor-map Monitor
 
 
 
-```
+```javascript
+
 router# config t
 router(config)# flow exporter-map NimbusTM
 router(config-fem)# destination <NimbutTM_IP_Address>
@@ -121,7 +122,9 @@ router(config-fem-ver)# template data timeout 60
 
 ### Step 2: Configure the Sample Map 
 
-```
+```javascript 
+
+
 router# config t
 router(config)# sampler-map NimbusSampler
 router(config-sm)# random 1 out-of <sample_rate> (E.G 2048)
