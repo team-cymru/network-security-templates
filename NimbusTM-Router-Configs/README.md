@@ -43,111 +43,184 @@ For the most part Netflow is transmitted via UDP, for NimbusTM the default port 
 
 ## Router Guides
 
-* [MikroTik Routers](#MikroTik-Routers)
-    * [Command Line](#MikroTik-CLI-Configuration)
-    * [Graphical User Interface](#MikroTik-GUI-Configuration)
-* [Juniper](#Juniper-Devices)
-    * [Juniper IPFIX](#Juniper-IPFIX-Configuration)
 * [Cisco](###Cisco-Devices)
     * [IOS-XR](###IOS-XR)
 * [Huawei](###Huawei)
+* [Juniper](#Juniper-Devices)
+    * [Juniper IPFIX](#Juniper-IPFIX-Configuration)
+
+* [MikroTik Routers](#MikroTik-Routers)
+    * [Command Line](#MikroTik-CLI-Configuration)
+    * [Graphical User Interface](#MikroTik-GUI-Configuration)
+
+
 
 
 ***
 
-# MikroTik-Routers
+# Cisco Devices
 
-MicroTik Netflow configuration can be configured either via the command line or through there GUI, both guides are provided below. 
+# IOS-XR
 
+## Supported Devices 
 
-# MikroTik CLI Configuration
+* NCS-550X
+
+* ASR 9K
+
+This list of Feature Updates is taken from <a href="https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r6-4/netflow/configuration/guide/b-netflow-cg-asr9k-64x/b-netflow-cg-asr9k-64x_chapter_010.html">Cisco's Public Documentation</a>
+
+> Release 3.9.1 This feature was introduced. <br>
+> Release 4.0.0 IPv6 Sampled NetFlow feature was introduced.<br>
+> Release 4.2.0 Destination-based Netflow Accounting feature was introduced.<br>
+> Release 5.2.0 The VRF table was added: Options Template Overview<br>
+> Release 6.0.1 Flow Filter and IPFIX features were introduced.<br>
+> Release 6.1.2 Enhancement to the Netflow Records to Capture BGP IPv6 Next-hop feature was introduced.<br>
+
+***
 
 ## Directory Structure
-The MikroTik command line provides two sub-menus that are used to configure Netflow exports. These sub-menus are :
 
-```python      
+Cisco offers both Netflow v9 and IPFIX as a transport mechnism for flow export. There are three directories which are edited in order to enable these features. 
 
-/ip traffic-flow   # used to enable flow monitoring. 
-/ip traffic-flow target # used to define collector properties and flow version. 
+```javascript
+
+// Used to define collector IP, transport port, source interface, and flow version.
+
+router(config)# flow exporter-map Exporter 
+
+// Specifies the rate at which packets (one out of n packets) are sampled.
+
+router(config)# sampler-map Sampler
+
+// Binds together the sample-map and exporter-map and gets applied to interfaces 
+
+router(config)# flow monitor-map Monitor
 
 ```
-***
-
-## Supported Devices
-This list of supported devices is taken from <a href= "https://wiki.mikrotik.com/wiki/Manual:IP/Traffic_Flow">Mikrotiks public documentation</a>
-
->RouterOS 2.9, v3, v4 +
 
 ***
-
-
 
 ## Configuration Guide
 
-### Step 1: Enable Flow Monitoring and Select Interfaces to Monitor
+### Step 1: Configure the Exporter Map 
 
-Choose which interfaces to monitor traffic on. MikroTik allows users to select a single interface, combination of interfaces using a comma to seperate each, or all interfaces by ommiting the interface arugment entrely. 
-
->ether1 and ether2 are sample interface names and may need to be modified depending on your router
-
-```python 
-# enable monitoring for a single interface.
-
-/ip traffic-flow set enabled=yes interfaces=ether1 active-flow-timeout=1m
-
-
-# enable monitoring for multiple interfaces using comma delimitation 
-
-/ip traffic-flow set enabled=yes interfaces=ether1:ether2 active-flow-timeout=1m
-
-# omit the interface key to enable monitoring for all interfaces. 
-
-/ip traffic-flow set enabled=yes active-flow-timeout=1m
-
-```
-
-### Step 2: Define Flow Version and Collector Properties.
-
-
-><NimbutTM-IP-Address>  is an example address and will need to be modified to match the IP address of your NimbusTM instance. 
-
-```python
-
-/ip traffic-flow target add dst-address=<NimbutTM-IP-Address> port=8888 version=9
-
-```
-
-After issuing this command, your router will now be sending flow data to NimbusTM.
-
-### Verification (Optional)
-
-MikroTik provides a **print** function that can be used to verfy the above commands were applied as intended. You can issue this in for each sub-menu with the following commands. 
 
 
 ```
-
-/ip traffic-flow print
-
-/ip traffic-flow target print
+router# config t
+router(config)# flow exporter-map NimbusTM
+router(config-fem)# destination <NimbutTM_IP_Address>
+router(config-fem)# source <interface_name>
+router(config-fem)# transport udp 8888
+router(config-fem-ver)# version v9
+router(config-fem-ver)# options sampler-table timeout 60
+router(config-fem-ver)# template data timeout 60
 
 ```
 
-# MikroTik GUI Configuration
+### Step 2: Configure the Sample Map 
 
-### Step 1: From the Main Menu navigate to IP -> Traffic Flow 
+```
+router# config t
+router(config)# sampler-map NimbusSampler
+router(config-sm)# random 1 out-of <sample_rate> (E.G 2048)
+router(config)# end
 
-From within these settings select your desired options. Similar to the CLI configuration you can specify some combination of interfaces or all interfaces. One settings are coinfigured click 'Apply'
+```
 
-![](images/MikroTik-NetFlow-Reporting.jpg)
+### Step 3: Congfigure the Monitor Maps 
 
+```
+# Configure v4 Monitor Map
 
-### Step 2 Navigate to Targets 
+router# config t
+router(config)# flow monitor-map NimbusMonitorV4
+router(config-fmm)# record ipv4
+router(config-fmm)# cache timeout inactive 15
+router(config-fmm)# cache timeout active 60
+router(config-fmm)# exporter NimbusTM
+router(config-fmm)# exit
 
-Populate the Address box with the 'Address' section with the IP Address of NimbusTM, the rest of the options can be set to match the image below. After all sections are filled out click 'Apply' and flows will be sent to your NimbusTM instance.
+# configure v6 monitor-map 
 
-![](images/MikroTik-NetFlow-Monitoring.jpg)
+router(config)# flow monitor-map NimbusMonitorV6
+router(config-fmm)# record ipv6
+router(config-fmm)# cache timeout inactive 15
+router(config-fmm)# cache timeout active 60
+router(config-fmm)# exporter NimbusTM
+
+```
+
+### Step 4: Apply Monitor Map and Sampler Map to Interfaces
+
+```
+router# config t
+router(config)# interface <Interface_Name>
+router(config-if)# flow ipv4 monitor NimbusMonitorV4 sampler NimbusSampler ingress
+router(config-if)# flow ipv6 monitor NimbusMonitorV6 sampler NimbusSampler ingress
+
+```
+#### Verification (Optional)
+
+```
+
+ show flow monitor
+
+ show flow exporter-map NimbusTM
+
+```
+
+# Huawei
+
+## Supported Devices 
+
+Most Huawei devices provide support for Netstream, instead of composing a list of each model it is reccomended to search for you model directly to verify support for the technology. Here is a useful link for CE devices: <a href="https://support.huawei.com/enterprise/en/doc/EDOC1000060766/a4d5e426/which-ce-switches-suppoNE40ENE20ENE80ECE12800rt-netstream">Cloud Engine Netstream Support</a>
+
+* Various NE models
+* Various CE models
+
+## Directory Structure
+
+## Configuration Guide
+
+### Step 1 
+
+Configure global commands for the netstream process Interface_IP and NimbutTM_IP_Address are examples used in this configuration. The Interface IP needs to be modified to be the IP Address of the interface that will export the flow data, NimbutTM_IP_Address must be modified to that of your NimbusTM instance. 
+
+Configure timeouts and Flow Version 
+```
+
+ip netstream timeout active 1
+ip netstream timeout inactive 15
+ip netstream export version 9
+ip netstream export source <Interface_IP>
+ip netstream export host  <NimbutTM_IP_Address> 8888
+
+```
+
+### Step 2 
+```
+
+# this command is only necessary if you run VRP >= 5.0
+# it will store interface indices in 32bit counters (as SNMP does) instead of 16bit.
+ip netstream export index-switch 32
+
+ip netstream export template timeout-rate 1
+ip netstream sampler fix-packets {{device_sample_rate}} inbound
+ip netstream export source {{device_sending_ip}}
+# Ship flow records to KProxy
+# default KProxy port for flow records ingest is 9995
+# update the next line with another port if your KProxy instance uses a custom-set port
+ip netstream export host {{kentik_flow_proxy_IP}} 9995
+
+```
 
 ***
+
+
+
+
 
 # Juniper Devices 
 
@@ -299,166 +372,99 @@ Flow information
 
 ```
 
-# Cisco Devices
+# MikroTik-Routers
 
-# IOS-XR
+MicroTik Netflow configuration can be configured either via the command line or through there GUI, both guides are provided below. 
 
-## Supported Devices 
 
-* NCS-550X
+# MikroTik CLI Configuration
 
-* ASR 9K
+## Directory Structure
+The MikroTik command line provides two sub-menus that are used to configure Netflow exports. These sub-menus are :
 
-This list of Feature Updates is taken from <a href="https://www.cisco.com/c/en/us/td/docs/routers/asr9000/software/asr9k-r6-4/netflow/configuration/guide/b-netflow-cg-asr9k-64x/b-netflow-cg-asr9k-64x_chapter_010.html">Cisco's Public Documentation</a>
+```python      
 
-> Release 3.9.1 This feature was introduced. <br>
-> Release 4.0.0 IPv6 Sampled NetFlow feature was introduced.<br>
-> Release 4.2.0 Destination-based Netflow Accounting feature was introduced.<br>
-> Release 5.2.0 The VRF table was added: Options Template Overview<br>
-> Release 6.0.1 Flow Filter and IPFIX features were introduced.<br>
-> Release 6.1.2 Enhancement to the Netflow Records to Capture BGP IPv6 Next-hop feature was introduced.<br>
+/ip traffic-flow   # used to enable flow monitoring. 
+/ip traffic-flow target # used to define collector properties and flow version. 
+
+```
+***
+
+## Supported Devices
+This list of supported devices is taken from <a href= "https://wiki.mikrotik.com/wiki/Manual:IP/Traffic_Flow">Mikrotiks public documentation</a>
+
+>RouterOS 2.9, v3, v4 +
 
 ***
 
-## Directory Structure
 
-Cisco offers both Netflow v9 and IPFIX as a transport mechnism for flow export. There are three directories which are edited in order to enable this feature. 
+
+## Configuration Guide
+
+### Step 1: Enable Flow Monitoring and Select Interfaces to Monitor
+
+Choose which interfaces to monitor traffic on. MikroTik allows users to select a single interface, combination of interfaces using a comma to seperate each, or all interfaces by ommiting the interface arugment entrely. 
+
+>ether1 and ether2 are sample interface names and may need to be modified depending on your router
+
+```python 
+# enable monitoring for a single interface.
+
+/ip traffic-flow set enabled=yes interfaces=ether1 active-flow-timeout=1m
+
+
+# enable monitoring for multiple interfaces using comma delimitation 
+
+/ip traffic-flow set enabled=yes interfaces=ether1:ether2 active-flow-timeout=1m
+
+# omit the interface key to enable monitoring for all interfaces. 
+
+/ip traffic-flow set enabled=yes active-flow-timeout=1m
+
+```
+
+### Step 2: Define Flow Version and Collector Properties.
+
+
+><NimbutTM-IP-Address>  is an example address and will need to be modified to match the IP address of your NimbusTM instance. 
 
 ```python
 
-# Used to define collector IP, transport port, source interface, and flow version.
-
-flow exporter-map Exporter 
-
-# Specifies the rate at which packets (one out of n packets) are sampled.
-
-sampler-map Sampler
-
-# Binds together the sample-map and exporter-map and gets applied to interfaces 
-
-flow monitor-map Monitor
+/ip traffic-flow target add dst-address=<NimbutTM-IP-Address> port=8888 version=9
 
 ```
+
+After issuing this command, your router will now be sending flow data to NimbusTM.
+
+### Verification (Optional)
+
+MikroTik provides a **print** function that can be used to verfy the above commands were applied as intended. You can issue this in for each sub-menu with the following commands. 
+
+
+```
+
+/ip traffic-flow print
+
+/ip traffic-flow target print
+
+```
+
+# MikroTik GUI Configuration
+
+### Step 1: From the Main Menu navigate to IP -> Traffic Flow 
+
+From within these settings select your desired options. Similar to the CLI configuration you can specify some combination of interfaces or all interfaces. One settings are coinfigured click 'Apply'
+
+![](images/MikroTik-NetFlow-Reporting.jpg)
+
+
+### Step 2 Navigate to Targets 
+
+Populate the Address box with the 'Address' section with the IP Address of NimbusTM, the rest of the options can be set to match the image below. After all sections are filled out click 'Apply' and flows will be sent to your NimbusTM instance.
+
+![](images/MikroTik-NetFlow-Monitoring.jpg)
 
 ***
-
-## Configuration Guide
-
-### Step 1: Configure the Exporter Map 
-
-
-
-```
-router# config t
-router(config)# flow exporter-map NimbusTM
-router(config-fem)# destination <NimbutTM_IP_Address>
-router(config-fem)# source <interface_name>
-router(config-fem)# transport udp 8888
-router(config-fem-ver)# version v9
-router(config-fem-ver)# options sampler-table timeout 60
-router(config-fem-ver)# template data timeout 60
-
-```
-
-### Step 2: Configure the Sample Map 
-
-```
-router# config t
-router(config)# sampler-map NimbusSampler
-router(config-sm)# random 1 out-of <sample_rate> (E.G 2048)
-router(config)# end
-
-```
-
-### Step 3: Congfigure the Monitor Maps 
-
-```
-# Configure v4 Monitor Map
-
-router# config t
-router(config)# flow monitor-map NimbusMonitorV4
-router(config-fmm)# record ipv4
-router(config-fmm)# cache timeout inactive 15
-router(config-fmm)# cache timeout active 60
-router(config-fmm)# exporter NimbusTM
-router(config-fmm)# exit
-
-# configure v6 monitor-map 
-
-router(config)# flow monitor-map NimbusMonitorV6
-router(config-fmm)# record ipv6
-router(config-fmm)# cache timeout inactive 15
-router(config-fmm)# cache timeout active 60
-router(config-fmm)# exporter NimbusTM
-
-```
-
-### Step 4: Apply Monitor Map and Sampler Map to Interfaces
-
-```
-router# config t
-router(config)# interface <Interface_Name>
-router(config-if)# flow ipv4 monitor NimbusMonitorV4 sampler NimbusSampler ingress
-router(config-if)# flow ipv6 monitor NimbusMonitorV6 sampler NimbusSampler ingress
-
-```
-#### Verification (Optional)
-
-```
-
- show flow monitor
-
- show flow exporter-map NimbusTM
-
-```
-
-# Huawei
-
-## Supported Devices 
-
-Most Huawei devices provide support for Netstream, instead of composing a list of each model it is reccomended to search for you model directly to verify support for the technology. Here is a useful link for CE devices: <a href="https://support.huawei.com/enterprise/en/doc/EDOC1000060766/a4d5e426/which-ce-switches-suppoNE40ENE20ENE80ECE12800rt-netstream">Cloud Engine Netstream Support</a>
-
-* Various NE models
-* Various CE models
-
-## Directory Structure
-
-## Configuration Guide
-
-### Step 1 
-
-Configure global commands for the netstream process Interface_IP and NimbutTM_IP_Address are examples used in this configuration. The Interface IP needs to be modified to be the IP Address of the interface that will export the flow data, NimbutTM_IP_Address must be modified to that of your NimbusTM instance. 
-
-Configure timeouts and Flow Version 
-```
-
-ip netstream timeout active 1
-ip netstream timeout inactive 15
-ip netstream export version 9
-ip netstream export source <Interface_IP>
-ip netstream export host  <NimbutTM_IP_Address> 8888
-
-```
-
-### Step 2 
-```
-
-# this command is only necessary if you run VRP >= 5.0
-# it will store interface indices in 32bit counters (as SNMP does) instead of 16bit.
-ip netstream export index-switch 32
-
-ip netstream export template timeout-rate 1
-ip netstream sampler fix-packets {{device_sample_rate}} inbound
-ip netstream export source {{device_sending_ip}}
-# Ship flow records to KProxy
-# default KProxy port for flow records ingest is 9995
-# update the next line with another port if your KProxy instance uses a custom-set port
-ip netstream export host {{kentik_flow_proxy_IP}} 9995
-
-```
-
-***
-
 
 
 
