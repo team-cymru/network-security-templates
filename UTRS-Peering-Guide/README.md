@@ -28,7 +28,7 @@ document and fill out the form on the official Team Cymru
    * [ Bird2.0 ](###Bird)
    * [ Juniper ](###Juniper)
    * [ Huawei ](###Huawei)
-   * [ Something About Pull Requests ](###Please help blurb)
+   * Are we missing a template for your gear?  Please reach out to us or submit a pull request.
 5. [ Contact Support ](##Support)
 6. [ Acknowledgments ](###Acknowledgments)
 
