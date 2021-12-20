@@ -20,14 +20,13 @@ document and fill out the form on the official Team Cymru
 
 1. [ Getting Started ](#getting-started)
 2. [ Supported BGP Announcements ](#supported-bgp-announcements)
-3. [ Frequently Asked Questions (FAQ) ](#frequently-asked-questions-(faq))
+3. [ Frequently Asked Questions (FAQ) ](#frequently-asked-questions-faq)
 4. [ Configuration Guides ](#configuration-guides)
    * [ Cisco IOS ](#cisco-ios)
    * [ Cisco IOS-XR ](#cisco-ios-xr)
    * [ Cisco IOS-XE ](#cisco-ios-xe)
-   * [ Bird2.0 ](#bird)
+   * [ Bird2.0 ](#bird20)
    * [ Juniper ](#juniper)
-   * [ Huawei ](#huawei)
    * Are we missing a template for your gear?  Please reach out to us or submit a pull request.
 5. [ Contact Support ](#support)
 6. [ Acknowledgments ](#acknowledgments)
