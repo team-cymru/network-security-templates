@@ -19,9 +19,9 @@ document and fill out the form on the official Team Cymru
 ## Table of Contents
 
 1. [ Getting Started ](##Getting-Started)
-2. [ Supported BGP Announcements ](##Supported-BGP-Announcements)
-3. [ Frequently Asked Questions (FAQ) ](##Frequently-Asked-Questions-(FAQ))
-4. [ Configuration Guides ](##Configuration-Guides)
+2. [ Supported BGP Announcements ](#supported-bgp-announcements)
+3. [ Frequently Asked Questions (FAQ) ](#Frequently-Asked-Questions-(FAQ))
+4. [ Configuration Guides ](#Configuration-Guides)
    * [ Cisco IOS ](###Cisco-IOS)
    * [ Cisco IOS-XR ](###Cisco-IOS-XR)
    * [ Cisco IOS-XE ](###Cisco-IOS-XE)
