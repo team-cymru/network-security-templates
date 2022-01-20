@@ -70,7 +70,7 @@ Configuring BGP to Block Denial-of-Service Attacks for additional information.
 
 
 
-IPv4 and IPv6 announcments that adhere to the following guidelines:
+IPv4 and IPv6 announcements that adhere to the following guidelines:
 
 
 * IPv4 prefixes up to a /25.
@@ -89,7 +89,7 @@ Flow Specification Rules (<i>aka flowspec</i>) that adhere to the following guid
 
 * <u>Must</u> contain drop action (traffic rate-limit 0).
 
-  * See [ITEF RFC 8955](https://datatracker.ietf.org/doc/html/rfc8955#section-7) for more detail.
+  * See [ITEF RFC 8955](https://datatracker.ietf.org/doc/html/rfc8955#section-7) for more details.
 
 
 
@@ -114,7 +114,7 @@ Examples of valid rules (in Bird2.0):
  Currently we are making this service available only to operators who
  have an existing ASN assigned and publicly announce one or more
  netblocks with their own originating ASN into the public Internet
- BGP routing tables.  We may provide a read-only feed to others in the
+ BGP routing table.  We may provide a read-only feed to others in the
  future.
 
 
@@ -131,7 +131,7 @@ Examples of valid rules (in Bird2.0):
 
 **Which prefixes does UTRS currently announce?**
 
- Generally, routing announcements are relatively infrequent, on
+ Generally, routing announcements are relatively infrequent. On
  average we will announce a handful of addresses, but it is possible
  we may not announce any routes.  The list may change regularly
  as threats come and go.  We do NOT currently publish the UTRS
@@ -153,15 +153,15 @@ Examples of valid rules (in Bird2.0):
 **Help I am under attack, can you block it for me?**
 
  If you represent a network with a registered autonomous system
- (AS) number and can verifiability prove you are the originator of the
- prefix or covering prefix in question then yes we may be able to help.
- If we have not worked with you before however, there may be some
+ (AS) number and can verifiably prove you are the originator of the
+ prefix or covering prefix in question, then yes, we may be able to help.
+ If we have not worked with you before, however, there may be some
  processing delay before entering your contact information and
  verifying the candidate prefix.
 
 
 
-**I don't have an ASN or use BGP, can you black hole something for me?**
+**I don't have an ASN nor use BGP. Can you black hole something for me?**
 
  We're afraid this is a service only for Internet BGP network
  operators who have been assigned a public use ASN, usually through
@@ -175,7 +175,7 @@ Examples of valid rules (in Bird2.0):
 
  Sometimes we already have relationships with potential participant
  networks or know people at potential peer network that we already
- trust.  In cases where we do not already know a potential peer we
+ trust.  In cases where we do not already know a potential peer, we
  generally obtain and verify UTRS peering requests with one or more
  registered contacts from the regional or local internet registry
  (RIR/LIR) WHOIS databases and the [Peering DB](http://peeringdb.com)
@@ -187,11 +187,11 @@ Examples of valid rules (in Bird2.0):
 Additionally If you sign a ROA that permits a prefix to be advertised by another AS, 
 we will honor your intention and allow that AS to request a block for addresses within the prefix you have authorized.
 
-**Does UTRS receive route announcements or just advertise them?**
+**Does UTRS receive route announcements or does it just advertise them?**
 
  Both, but UTRS does not originate route announcements on its own.  All
  announcements are input from the community via BGP announcements to
- UTRS, which performs verification and relay in the form of a BGP
+ UTRS, which performs verification and relays them in the form of a BGP
  announcement to all other participants.
 
 
@@ -203,7 +203,7 @@ we will honor your intention and allow that AS to request a block for addresses 
 
 **How does UTRS verify route announcements?**
 
-We then utilize the [RIPEstat](https://stat.ripe.net/) API to analyze route
+We utilize the [RIPEstat](https://stat.ripe.net/) API to analyze route
  history, origin and AS path.  The peer must be currently the sole
  originator or upstream of the most specific covering route.  The peer
  must also have a history of announcing that covering prefix for at
@@ -230,8 +230,8 @@ We then utilize the [RIPEstat](https://stat.ripe.net/) API to analyze route
  and we are planning to enhance the route verification process to
  be able to support and relay customer AS black hole routes.  A
  participant can request such a route be announced manually by
- contacting the UTRS administration team where manual review will
- can be performed the route subsequently announced if verified.
+ contacting the UTRS administration team. A manual review is
+ be performed and, if verified, the route is subsequently announced.
 
 
 
