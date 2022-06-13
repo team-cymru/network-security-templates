@@ -344,7 +344,7 @@ With BGP FlowSpec, you can send things like TCP destination IP 192.0.2.100 and d
 **Is there any other public material about UTRS I can review?**
 
  * Original announcement of the project given at [Internet Security Days 2014](https://www.cymru.com/jtk/talks/isd2014-utrs.pdf) **create a historic section to house legacy information. 
- * NANOG 62 Lightning Talk: [slides](http://nanog.org/meetings/abstract?id=2436) and [video](https://www.nanog.org/sites/default/files/08-oct-2014-webcast-lightning-talks.mp4)
+ * NANOG 62 Lightning Talk: [slides](http://nanog.org/meetings/abstract?id=2436) and [video](https://youtu.be/4yd5fH4j3WM?t=40)
  * As with any good Network Project, there was a NANOG [discussion thread](http://mailman.nanog.org/pipermail/nanog/2014-October/070307.html).
  * CARIS 2015 Lighting Talk: [slides](https://www.iab.org/wp-content/IAB-uploads/2015/04/CARIS_2015_submission_20.pdf)
 
