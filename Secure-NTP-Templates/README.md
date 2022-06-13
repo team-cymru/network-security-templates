@@ -36,12 +36,6 @@ This is a template IOS configuration that should work for most sites, but pay at
 	ntp peer   192.0.2.2            ! a time server you sync with and allow to sync to you
 	ntp source Loopback0            ! we recommend using a loopback interface for sending NTP messages if possible
 	!
-	! NTP access control
-	ntp access-group query-only 1   ! deny all NTP control queries
-	ntp access-group serve 1        ! deny all NTP time and control queries by default
-	ntp access-group peer 10        ! permit time sync to configured peer(s)/server(s) only
-	ntp access-group serve-only 20  ! permit NTP time sync requests from a select set of clients
-	!
 	! access control lists (ACLs)
 	access-list 1 remark utility ACL to block everything
 	access-list 1 deny any
@@ -54,6 +48,12 @@ This is a template IOS configuration that should work for most sites, but pay at
 	access-list 20 remark Hosts/Networks we allow to get time from us
 	access-list 20 permit 192.0.2.0 0.0.0.255
 	access-list 20 deny any
+	!
+	! NTP access control
+	ntp access-group query-only 1   ! deny all NTP control queries
+	ntp access-group serve 1        ! deny all NTP time and control queries by default
+	ntp access-group peer 10        ! permit time sync to configured peer(s)/server(s) only
+	ntp access-group serve-only 20  ! permit NTP time sync requests from a select set of clients
 
 
 Simple NTP authentication using MD5 in IOS can easily be managed for a limited set of static peers and upstream time providers that support it. Since this is generally a manual process, MD5 authentication support for a a large set of clients is likely to be unwieldy.  Nonetheless, this feature provides some additional protection from unwanted NTP messages.  This example assumes that you create an &#8216;ntp authentication-key&#8217; for each peer/server.  The key can be re-used, but we do not recommend re-using the same key with peers or upstreams from different autonomous systems.  Also create a &#8216;ntp trusted-key&#8217; line for each keyid you&#8217;ve configured.  Please note, we have seen some gear limit the pass phrase to eight characters.
