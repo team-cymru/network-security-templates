@@ -389,8 +389,8 @@ The configuration examples provides are not meant to be copy and pasted into you
     neighbor <UTRS2_IP_ADDRESS> route-map utrs-out out
     !
     ! ensure you accept the prefixes you are expecting, maybe reject "golden" prefixes
-    neighbor <UTRS1_IP_ADDRESS> route-map utrs-in
-    neighbor <UTRS2_IP_ADDRESS> route-map utrs-in
+    neighbor <UTRS1_IP_ADDRESS> route-map utrs-in in
+    neighbor <UTRS2_IP_ADDRESS> route-map utrs-in in
     !
     ! default UTRS next-hop, if you change it, make sure it forwards to null
     ip route 192.0.2.1 255.255.255.255 null0
