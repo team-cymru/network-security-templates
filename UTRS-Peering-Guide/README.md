@@ -25,6 +25,8 @@ document and fill out the form on the official Team Cymru
    * [ Cisco IOS ](#cisco-ios)
    * [ Cisco IOS-XR ](#cisco-ios-xr)
    * [ Cisco IOS-XE ](#cisco-ios-xe)
+   * [ Mikrotik v7 ](#mikrotik-v7)
+   * [ Mikrotik v6 ](#mikrotik-v6)
    * [ Bird2.0 ](#bird20)
    * [ Juniper ](#juniper)
    * Are we missing a template for your gear?  Please reach out to us or submit a pull request.
@@ -676,7 +678,36 @@ The configuration examples provides are not meant to be copy and pasted into you
 
 
 
-### MikroTik
+### MikroTik V7
+
+ Your configuration may differ slightly, particularly the peering
+ attributes that uniquely identify your end of the peering session.  You
+ may also wish to apply a strict set of import and export policy
+ directives.  Consider this generic template as a guide, not a
+ specification.
+ 
+ 
+	# BGP instance setup
+	/routing bgp template
+	set default as=<YOUR_ASN> disabled=no router-id=<WAN_IP_ADDRESS> routing-table=main
+
+	# route filters - install these routes as black hole routes
+	# do NOT receive or announce anything else by default
+	/routing filter rule
+	add chain=utrs-in disabled=no rule="if (dst-len in 0-32 && bgp-communities includes 64496:0) { set blackhole yes; accept; }"
+	add chain=utrs-in disabled=no rule="reject;"
+	add chain=utrs-out disabled=no rule="reject;"
+
+	# UTRS peering session
+	/routing bgp connection
+	add as=<YOUR_ASN> disabled=no input.filter=utrs-in local.role=ebgp multihop=yes name=UTRS output.filter-chain=utrs-out \
+    .no-client-to-client-reflection=no remote.address=<UTRS_IP_ADDRESS> .as=64496 tcp-md5-key=<UTRS_MD5_PASSWORD> router-id=<WAN_IP_ADDRESS> \
+    routing-table=main templates=default
+
+
+ 
+ 
+### MikroTik V6
 
  Your configuration may differ slightly, particularly the peering
  attributes that uniquely identify your end of the peering session.  You
@@ -696,9 +727,6 @@ The configuration examples provides are not meant to be copy and pasted into you
 
 	# UTRS peering session
 	/routing bgp peer add address-families=ip disabled=no in-filter=utrs-in instance=default multihop=yes name=UTRS out-filter=utrs-out passive=yes remote-address=<UTRS_IP_ADDRESS>; remote-as=64496 tcp-md5-key=<UTRS_MD5_PASSWORD>
- 
- 
-
 
 
 ### Bird2.0 
