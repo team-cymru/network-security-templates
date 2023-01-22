@@ -65,12 +65,12 @@ add address=203.0.113.254/32 list=UTRS-VICTIM`
 
 Next we will get the general BGP session up and running.
 
-/routing bgp template
+`/routing bgp template
 set default= as=65534 disable=no router-id=203.0.113.1 routing-table=main
 
 /routing bgp connection
 add as=65534 disable=no local.address=203.0.113.1 .role=ebgp-peer .ttl=64 multihop=yes name=TC-UTRS-001 \
-output.network=UTRS-VICTIM remote.address=198.51.100.1/32 .as=64512 .ttl=64 router-id=203.0.113.1 routing-table=main templates=default
+output.network=UTRS-VICTIM remote.address=198.51.100.1/32 .as=64512 .ttl=64 router-id=203.0.113.1 routing-table=main templates=default`
 
 
 
