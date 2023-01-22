@@ -59,8 +59,8 @@ The following have been tested on RouterOS 7.5, build Aug-30-2022
 
 First we create a address list.  This address list will contain VICTIM IP's on *YOUR* network
 
-/ip firewall address-list
-add address=203.0.113.254/32 list=UTRS-VICTIM
+`/ip firewall address-list
+add address=203.0.113.254/32 list=UTRS-VICTIM`
 
 
 Next we will get the general BGP session up and running.
