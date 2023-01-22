@@ -36,7 +36,18 @@ Some of this information is already in your network configuration, some of it wi
 Generally the IP used in item 2 above should be a loopback address on your router.  That way if you are multi-homed that loopback prefix
 should continue to be reachable no-matter if you have an outage on one of your provider links.
 
-In the examples below we will use several IP addresses to 
+In the examples below we will use several identifiers (IP's and ASN) to represent the network elements.
+These values are for the EXAMPLES ONLY.  You **WILL** need to change them to match the real world.
+
+Customer ASN: 65534
+Customer IP Range:  203.0.113.0/24
+Loopback:  203.0.113.1/32
+Victim IP:  203.0.113.254/32
+
+Team Cymru (these are examples, see your email for real values)
+UTRS ASN: 64512
+UTRS-Server-1 IP:  198.51.100.1
+UTRS-Server-2 IP:  198.51.100.200
 
 #### RouterOS 6.x
 
@@ -44,4 +55,22 @@ In the examples below we will use several IP addresses to
 #### RouterOS 7.x
 
 The following have been tested on RouterOS 7.5, build Aug-30-2022
+
+
+First we create a address list.  This address list will contain VICTIM IP's on *YOUR* network
+
+/ip firewall address-list
+add address=203.0.113.254/32 list=UTRS-VICTIM
+
+
+Next we will get the general BGP session up and running.
+
+/routing bgp template
+set default= as=65534 disable=no router-id=203.0.113.1 routing-table=main
+
+/routing bgp connection
+add as=65534 disable=no local.address=203.0.113.1 .role=ebgp-peer .ttl=64 multihop=yes name=TC-UTRS-001 \
+output.network=UTRS-VICTIM remote.address=198.51.100.1/32 .as=64512 .ttl=64 router-id=203.0.113.1 routing-table=main templates=default
+
+
 
