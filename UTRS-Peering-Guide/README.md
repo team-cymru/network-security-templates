@@ -27,6 +27,7 @@ document and fill out the form on the official Team Cymru
    * [ Cisco IOS-XE ](#cisco-ios-xe)
    * [ Bird2.0 ](#bird20)
    * [ Juniper ](#juniper)
+   * [ Mikrotik ](#Mikrotik)
    * Are we missing a template for your gear?  Please reach out to us or submit a pull request.
 5. [ Contact Support ](#support)
 6. [ Acknowledgments ](#acknowledgments)
