@@ -29,8 +29,11 @@ Before you start you will need to collect some general information and have it a
 Some of this information is already in your network configuration, some of it will come from Team Cymru's Client Success Team when you signup.
 
 1.Your ASN (Autonomous System Number):________________
+
 2. The IP on your network that you will be peering from:________________
+
 3. The ASN that Team Cymru provided to you:________________
+
 4. The IP address(s) that Team Cymru provided to you (these may be multiple addresses):________________________
 
 Generally the IP used in item 2 above should be a loopback address on your router.  That way if you are multi-homed that loopback prefix
