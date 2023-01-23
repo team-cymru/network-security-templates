@@ -28,7 +28,7 @@ to translate the CLI commands into the appropriate menu's on the GUI.
 Before you start you will need to collect some general information and have it available while you work on the configuration.
 Some of this information is already in your network configuration, some of it will come from Team Cymru's Client Success Team when you signup.
 
-1.Your ASN (Autonomous System Number):________________
+1. Your ASN (Autonomous System Number):________________
 
 2. The IP on your network that you will be peering from:________________
 
@@ -60,15 +60,7 @@ UTRS-Server-2 IP:  198.51.100.200
 The following have been tested on RouterOS 7.5, build Aug-30-2022
 
 
-First we create an address list.  This address list will contain VICTIM IP's on *YOUR* network
-When you have a vicitm address to announce you will ADD it to this list.
-This list will also be used by BGP to advertise only those routes that are listed in this list.
-
-
-`/ip firewall address-list
-add address=203.0.113.254/32 list=TC-UTRS-VICTIM`
-
-Next we need to create an INPUT filter.  This will take the UTRS routes and tag them such that your router will discard any traffic TO this routes.
+First we need to create an INPUT filter.  This will take the received UTRS routes and tag them such that your router will discard any traffic TO these routes.
 You want to make sure that there is an INPUT filter configured before you establish the BGP session with the UTRS routers
 
 '/routing filter rule
