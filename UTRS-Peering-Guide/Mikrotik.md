@@ -97,7 +97,7 @@ BGP sessions.  This will help provide better redudancy and fail-over should one 
 
 You can validate that you are receiving routes by using the following command
 
-`/routing/route/print where belongs-to=bgp-IP-198.51.100.1'   
+`/routing/route/print where belongs-to=bgp-IP-198.51.100.1`  
 Remember in real life you need to replace the 198.51.100.1 with the real IP for the UTRS router(s) you received from Team Cymru
 
 
