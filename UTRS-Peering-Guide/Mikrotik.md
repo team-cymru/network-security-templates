@@ -78,17 +78,24 @@ Next we will get the general BGP session up and running.
 set default= as=65534 disable=no router-id=203.0.113.1 routing-table=main`
 
 Second UTRS BGP Server Configuration
+
 `/routing bgp connection
 add as=65534 disable=no local.address=203.0.113.1 .role=ebgp-peer .ttl=64 multihop=yes name=TC-UTRS-001 output.network=TC-UTRS-VICTIM remote.address=198.51.100.1/32 .as=64512 .ttl=64 router-id=203.0.113.1 routing-table=main tcp-md5-key=CHANGEMENOW templates=default`
 
 Second UTRS BGP Server Configuration
+
 `/routing bgp connection
 add as=65534 disable=no local.address=203.0.113.1 .role=ebgp-peer .ttl=64 multihop=yes name=TC-UTRS-002 output.network=TC-UTRS-VICTIM remote.address=198.51.100.200/32 .as=64512 .ttl=64 router-id=203.0.113.1 routing-table=main tcp-md5-key=CHANGEMENOW templates=default`
 
 You will need to change the tcp-md5-key to the key that was assigned by Team Cymru as part of your signup to the service.
 
-At this point you should have a working BGP session with one of the UTRS servers.  We *strongly* recommend that you configure at least 2 
-BGP sessions.  This will help provide better redudancy and fail-over should on of our UTRS servers goes down.
+At this point you should have a working BGP session with one or more of the UTRS servers.  We *strongly* recommend that you configure at least 2 
+BGP sessions.  This will help provide better redudancy and fail-over should one of our UTRS servers goes down.
+
+You can validate that you are receiving routes by using the following command
+
+`/routing/route/print where belongs-to=bgp-IP-198.51.100.1'   
+Remember in real life you need to replace the 198.51.100.1 with the real IP for the UTRS router(s) you received from Team Cymru
 
 
 
