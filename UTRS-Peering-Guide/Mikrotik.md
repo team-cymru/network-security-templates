@@ -57,19 +57,41 @@ UTRS-Server-2 IP:  198.51.100.200
 The following have been tested on RouterOS 7.5, build Aug-30-2022
 
 
-First we create a address list.  This address list will contain VICTIM IP's on *YOUR* network
+First we create an address list.  This address list will contain VICTIM IP's on *YOUR* network
+When you have a vicitm address to announce you will ADD it to this list.
+This list will also be used by BGP to advertise only those routes that are listed in this list.
+
 
 `/ip firewall address-list
-add address=203.0.113.254/32 list=UTRS-VICTIM`
+add address=203.0.113.254/32 list=TC-UTRS-VICTIM`
 
+Next we need to create an INPUT filter.  This will take the UTRS routes and tag them such that your router will discard any traffic TO this routes.
+You want to make sure that there is an INPUT filter configured before you establish the BGP session with the UTRS routers
+
+'/routing filter rule
+add chain=TC-UTRS-IN disabled=no rule=\
+"if(bgp-communities includes 64496:0) {set distance 1; append bgp-communities no-export,no-advertise; set blackhole yes; accept;}"'
 
 Next we will get the general BGP session up and running.
 
 `/routing bgp template
 set default= as=65534 disable=no router-id=203.0.113.1 routing-table=main`
 
+Second UTRS BGP Server Configuration
 `/routing bgp connection
-add as=65534 disable=no local.address=203.0.113.1 .role=ebgp-peer .ttl=64 multihop=yes name=TC-UTRS-001 output.network=UTRS-VICTIM remote.address=198.51.100.1/32 .as=64512 .ttl=64 router-id=203.0.113.1 routing-table=main templates=default`
+add as=65534 disable=no local.address=203.0.113.1 .role=ebgp-peer .ttl=64 multihop=yes name=TC-UTRS-001 output.network=TC-UTRS-VICTIM remote.address=198.51.100.1/32 .as=64512 .ttl=64 router-id=203.0.113.1 routing-table=main tcp-md5-key=CHANGEMENOW templates=default`
+
+Second UTRS BGP Server Configuration
+`/routing bgp connection
+add as=65534 disable=no local.address=203.0.113.1 .role=ebgp-peer .ttl=64 multihop=yes name=TC-UTRS-002 output.network=TC-UTRS-VICTIM remote.address=198.51.100.200/32 .as=64512 .ttl=64 router-id=203.0.113.1 routing-table=main tcp-md5-key=CHANGEMENOW templates=default`
+
+You will need to change the tcp-md5-key to the key that was assigned by Team Cymru as part of your signup to the service.
+
+At this point you should have a working BGP session with one of the UTRS servers.  We *strongly* recommend that you configure at least 2 
+BGP sessions.  This will help provide better redudancy and fail-over should on of our UTRS servers goes down.
+
+
+
 
 
 
