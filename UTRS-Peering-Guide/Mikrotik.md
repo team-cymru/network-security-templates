@@ -50,8 +50,8 @@ Loopback:  203.0.113.1/32
 
 Victim IP:  203.0.113.254/32
 
-Team Cymru (these are examples, see your email for real values)
-UTRS ASN: 64512
+Team Cymru (these are examples, see your email for real values)<br \>
+UTRS ASN: 64512 <br \>
 UTRS-Server-1 IP:  198.51.100.1
 UTRS-Server-2 IP:  198.51.100.200
 
