@@ -54,6 +54,10 @@ UTRS-Server-2 IP:  198.51.100.200
 
 #### RouterOS 6.x
 
+The following was tested on a CCR-1009-7G-1C-P
+Running RouterOS v6.49.7 on Jan 23,2023
+
+
 
 #### RouterOS 7.x
 
