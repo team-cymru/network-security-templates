@@ -57,7 +57,7 @@ Running RouterOS v6.49.7 on Jan 23,2023
 1. We need to create an INPUT filter.  This will take the received UTRS routes and tag them such that the router will _discard_ any traffic TO these routes.  You want to make sure you have an INPUT filter configured before you establish the BGP session with Team Cymru.
 
 `/routing filter
-add action=accept append-bgp-communities=no-export,no-advertise bgp-communities=64496:0 chain=tc-utrs-in prefix-length=25-32 set-type=blackhole` <br />
+add action=accept append-bgp-communities=no-export,no-advertise bgp-communities=64496:0 chain=tc-utrs-in \ prefix-length=25-32 set-type=blackhole` <br />
 `add action=discard chain=tc-utrs-in`
 
 This filter will match on received routes that have a community string of 64496:0 set.  
