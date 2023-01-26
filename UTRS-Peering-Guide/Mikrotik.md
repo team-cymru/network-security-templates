@@ -57,6 +57,12 @@ UTRS-Server-2 IP:  198.51.100.200
 The following was tested on a CCR-1009-7G-1C-P
 Running RouterOS v6.49.7 on Jan 23,2023
 
+1. We need to create an INPUT filter.  This will take the received UTRS routes and tag them such that the router will _discard_ any traffic TO these routes.  You want to make sure you have an INPUT filter configured before you establish the BGP session with Team Cymru.
+2. Next we want to create an OUTPUT filter.  This will only permit YOUR prefixes to be announced to the Team Cymru UTRS BGP Servers.  It is important to have an output filter so that you don't accidentally announce routes that are not your own.
+3. Now we will create the BGP Instance for talking to Team Cymru
+4. Now we create the BGP PEER's for each Team Cymru UTRS server you will connect to.  We strongly recommend that you connect to at least 2 UTRS servers.  This will provide service redundancy and enhanced resiliancy.
+5. Now we will create the BGP NETWORK'S statements.  Prefixes listed here are your **ACTIVE** victims.  Do not list a prefix here unless it is under attack!
+6. 
 
 
 ## RouterOS 7.x
