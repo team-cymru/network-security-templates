@@ -28,13 +28,10 @@ to translate the CLI commands into the appropriate menu's on the GUI.
 Before you start you will need to collect some general information and have it available while you work on the configuration.
 Some of this information is already in your network configuration, some of it will come from Team Cymru's Client Success Team when you signup.
 
-1. Your ASN (Autonomous System Number):________________
-
-2. The IP on your network that you will be peering from:________________
-
-3. The ASN that Team Cymru provided to you:________________
-
-4. The IP address(s) that Team Cymru provided to you (these may be multiple addresses):________________________
+1. Your ASN (Autonomous System Number):________________<br />
+2. The IP on your network that you will be peering from:________________<br />
+3. The ASN that Team Cymru provided to you:________________<br />
+4. The IP address(s) that Team Cymru provided to you (these may be multiple addresses):________________________<br />
 
 Generally the IP used in item 2 above should be a loopback address on your router.  That way if you are multi-homed that loopback prefix
 should continue to be reachable no-matter if you have an outage on one of your provider links.
@@ -42,22 +39,19 @@ should continue to be reachable no-matter if you have an outage on one of your p
 In the examples below we will use several identifiers (IP's and ASN) to represent the network elements.
 These values are for the EXAMPLES ONLY.  You **WILL** need to change them to match the real world.
 
-Customer ASN: 65534
-
-Customer IP Range:  203.0.113.0/24
-
-Loopback:  203.0.113.1/32
-
-Victim IP:  203.0.113.254/32
+Customer ASN: 65534<br />
+Customer IP Range:  203.0.113.0/24<br />
+Loopback:  203.0.113.1/32<br />
+Victim IP:  203.0.113.254/32<br />
 
 Team Cymru (these are examples, see your email for real values)<br />
 UTRS ASN: 64512 <br />
-UTRS-Server-1 IP:  198.51.100.1
-UTRS-Server-2 IP:  198.51.100.200
+UTRS-Server-1 IP:  198.51.100.1<br />
+UTRS-Server-2 IP:  198.51.100.200<br />
 
 ## RouterOS 6.x
 
-The following was tested on a CCR-1009-7G-1C-P
+The following was tested on a CCR-1009-7G-1C-P<br />
 Running RouterOS v6.49.7 on Jan 23,2023
 
 1. We need to create an INPUT filter.  This will take the received UTRS routes and tag them such that the router will _discard_ any traffic TO these routes.  You want to make sure you have an INPUT filter configured before you establish the BGP session with Team Cymru.
@@ -70,7 +64,7 @@ Running RouterOS v6.49.7 on Jan 23,2023
 
 ## RouterOS 7.x
 
-The following have been tested on a RB5009UPr+S+IN
+The following have been tested on a RB5009UPr+S+IN<br />
 Running RouterOS 7.5, build Aug-30-2022
 
 
