@@ -1,5 +1,5 @@
 # Mikrotik Configuration Information
-
+#### Revised 25-JAN-2023, John Brown, CISSP
 ## Overview
 
 The following describes how to configure Mikrotik RouterOS version 6.x and 7.x for use with the UTRS service. 
@@ -23,7 +23,7 @@ This document will ONLY provide command line interface (CLI) configuration comma
 to translate the CLI commands into the appropriate menu's on the GUI.
 
 
-### General Information
+## General Information
 
 Before you start you will need to collect some general information and have it available while you work on the configuration.
 Some of this information is already in your network configuration, some of it will come from Team Cymru's Client Success Team when you signup.
@@ -52,16 +52,17 @@ UTRS ASN: 64512
 UTRS-Server-1 IP:  198.51.100.1
 UTRS-Server-2 IP:  198.51.100.200
 
-#### RouterOS 6.x
+## RouterOS 6.x
 
 The following was tested on a CCR-1009-7G-1C-P
 Running RouterOS v6.49.7 on Jan 23,2023
 
 
 
-#### RouterOS 7.x
+## RouterOS 7.x
 
-The following have been tested on RouterOS 7.5, build Aug-30-2022
+The following have been tested on a RB5009UPr+S+IN
+Running RouterOS 7.5, build Aug-30-2022
 
 
 1. We need to create an INPUT filter.  This will take the received UTRS routes and tag them such that your router will discard any traffic TO these routes.
