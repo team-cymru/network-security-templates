@@ -55,11 +55,25 @@ The following was tested on a CCR-1009-7G-1C-P<br />
 Running RouterOS v6.49.7 on Jan 23,2023
 
 1. We need to create an INPUT filter.  This will take the received UTRS routes and tag them such that the router will _discard_ any traffic TO these routes.  You want to make sure you have an INPUT filter configured before you establish the BGP session with Team Cymru.
+
+`/routing filter
+add action=accept append-bgp-communities=no-export,no-advertise bgp-communities=64496:0 chain=tc-utrs-in prefix-length=25-32 \
+    set-type=blackhole
+add action=discard chain=tc-utrs-in`
+
+This filter will match on received routes that have a community string of 64496:0 set.  
+For those routes that match they will be installed into the routing table with a type of _blackhole_.   
+A blackhole route will cause the Mikrotik to drop traffic going towards that IP address.
+We are also only going to match on IPv4 routes that are between a /25 and a /32.  This conforms to the UTRS specification.
+Lastly we append two well-known BGP communities, 'No-Export' and 'No-Advertise'   We do this so that these routes do not get advertised to other BGP peers. You don't want to redistrbute these to your IX, Transit or Customer BGP sessions.
+
+
+
 2. Next we want to create an OUTPUT filter.  This will only permit YOUR prefixes to be announced to the Team Cymru UTRS BGP Servers.  It is important to have an output filter so that you don't accidentally announce routes that are not your own.
-3. Now we will create the BGP Instance for talking to Team Cymru
-4. Now we create the BGP PEER's for each Team Cymru UTRS server you will connect to.  We strongly recommend that you connect to at least 2 UTRS servers.  This will provide service redundancy and enhanced resiliancy.
-5. Now we will create the BGP NETWORK'S statements.  Prefixes listed here are your **ACTIVE** victims.  Do not list a prefix here unless it is under attack!
-6. 
+4. Now we will create the BGP Instance for talking to Team Cymru
+5. Now we create the BGP PEER's for each Team Cymru UTRS server you will connect to.  We strongly recommend that you connect to at least 2 UTRS servers.  This will provide service redundancy and enhanced resiliancy.
+6. Now we will create the BGP NETWORK'S statements.  Prefixes listed here are your **ACTIVE** victims.  Do not list a prefix here unless it is under attack!
+7. 
 
 
 ## RouterOS 7.x
