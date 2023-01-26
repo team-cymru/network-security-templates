@@ -43,8 +43,11 @@ In the examples below we will use several identifiers (IP's and ASN) to represen
 These values are for the EXAMPLES ONLY.  You **WILL** need to change them to match the real world.
 
 Customer ASN: 65534
+
 Customer IP Range:  203.0.113.0/24
+
 Loopback:  203.0.113.1/32
+
 Victim IP:  203.0.113.254/32
 
 Team Cymru (these are examples, see your email for real values)
