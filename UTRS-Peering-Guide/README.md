@@ -679,6 +679,8 @@ The configuration examples provides are not meant to be copy and pasted into you
 
 ### MikroTik
 
+[Contribution guidelines for this project](docs/mikrotik.md)
+
  Your configuration may differ slightly, particularly the peering
  attributes that uniquely identify your end of the peering session.  You
  may also wish to apply a strict set of import and export policy
