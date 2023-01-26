@@ -74,9 +74,9 @@ Running RouterOS 7.5, build Aug-30-2022
 1. We need to create an INPUT filter.  This will take the received UTRS routes and tag them such that your router will discard any traffic TO these routes.
 You want to make sure that there is an INPUT filter configured before you establish the BGP session with the UTRS routers
 
-'/routing filter rule
+`/routing filter rule
 add chain=TC-UTRS-IN disabled=no rule=\
-"if(bgp-communities includes 64496:0) {set distance 1; append bgp-communities no-export,no-advertise; set blackhole yes; accept;}"'
+"if(bgp-communities includes 64496:0) {set distance 1; append bgp-communities no-export,no-advertise; set blackhole yes; accept;}"`
 
 We are creating an input rule called TC-UTRS-IN.  The rule will be applied to the UTRS BGP sessions.  This rule will match on BGP routes received from UTRS that have the commmunity string "64496:0" as part of the prefix advertisement.   For routes that match we will ADD the NO-EXPORT and NO-ADVERTISE communities to the prefixes.  We do this to help protect aginst the accidental advertisement out to other BGP neighbors you might have.  We also set BLACKHOLE to YES.  This will cause the Mikrotik to take all packets with a destination to these received routes and drop traffic towards them.
 
@@ -84,7 +84,7 @@ We are creating an input rule called TC-UTRS-IN.  The rule will be applied to th
 
 Using a template helps reduce the workload in configuring multiple sessions and makes sure that a consistent policy is applied to all sessions that use this policy.
 
-'/routing/bgp/template
+`/routing/bgp/template
 add as=65534 disabled=no input.filter=TC-UTRS-IN multihop=yes name=TC-UTRS-TEMPLATE output.network=TC-UTRS-VICTIM router-id=203.0.113.1 routing-table=main`
 
 This creates a BGP template that sets our local AS to 65534 and also sets the input filter to TC-UTRS-IN.  In addition it sets the output filter
@@ -96,12 +96,12 @@ Now we are going to configure the actual BGP session(s). We **strongly** recomme
 
 First UTRS Route Server
 `/routing bgp connection
-add local.role=ebgp name=TC-UTRS-001 remote.address=198.51.100.1/32 .as=64512 .ttl=64 templates=TC-UTRS-TEMPLATE tcp-md5-key=CHANGEMENOW'
+add local.role=ebgp name=TC-UTRS-001 remote.address=198.51.100.1/32 .as=64512 .ttl=64 templates=TC-UTRS-TEMPLATE tcp-md5-key=CHANGEMENOW`
 
 Second UTRS BGP Server Configuration
 
 `/routing bgp connection
-add local.role=ebgp name=TC-UTRS-002 remote.address=198.51.100.200/32 .as=64512 .ttl=64 templates=TC-UTRS-TEMPLATE tcp-md5-key=CHANGEMENOW'
+add local.role=ebgp name=TC-UTRS-002 remote.address=198.51.100.200/32 .as=64512 .ttl=64 templates=TC-UTRS-TEMPLATE tcp-md5-key=CHANGEMENOW`
 
 You will need to change the tcp-md5-key to the key that was assigned by Team Cymru as part of your signup to the service.
 Also another **reminder** the IP addresses and ASN's used in these examples need to be changed to the correct values.
