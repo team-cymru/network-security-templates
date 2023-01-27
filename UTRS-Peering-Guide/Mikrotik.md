@@ -86,9 +86,11 @@ Running RouterOS 7.5, build Aug-30-2022
 1. We need to create an INPUT filter.  This will take the received UTRS routes and tag them such that your router will discard any traffic TO these routes.
 You want to make sure that there is an INPUT filter configured before you establish the BGP session with the UTRS routers
 
-```/routing filter rule
+```
+/routing filter rule
 add chain=TC-UTRS-IN disabled=no rule=\
-"if(bgp-communities includes 64496:0) {set distance 1; append bgp-communities no-export,no-advertise; set blackhole yes; accept;}"```
+"if(bgp-communities includes 64496:0) {set distance 1; append bgp-communities no-export,no-advertise; set blackhole yes; accept;}"
+```
 
 We are creating an input rule called TC-UTRS-IN.  The rule will be applied to the UTRS BGP sessions.  This rule will match on BGP routes received from UTRS that have the commmunity string "64496:0" as part of the prefix advertisement.   For routes that match we will ADD the NO-EXPORT and NO-ADVERTISE communities to the prefixes.  We do this to help protect aginst the accidental advertisement out to other BGP neighbors you might have.  We also set BLACKHOLE to YES.  This will cause the Mikrotik to take all packets with a destination to these received routes and drop traffic towards them.
 
