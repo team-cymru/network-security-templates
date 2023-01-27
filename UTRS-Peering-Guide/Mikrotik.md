@@ -98,8 +98,10 @@ We are creating an input rule called TC-UTRS-IN.  The rule will be applied to th
 
 Using a template helps reduce the workload in configuring multiple sessions and makes sure that a consistent policy is applied to all sessions that use this policy.
 
-```/routing/bgp/template
-add as=65534 disabled=no input.filter=TC-UTRS-IN multihop=yes name=TC-UTRS-TEMPLATE output.network=TC-UTRS-VICTIM router-id=203.0.113.1 routing-table=main```
+```
+/routing/bgp/template
+add as=65534 disabled=no input.filter=TC-UTRS-IN multihop=yes name=TC-UTRS-TEMPLATE output.network=TC-UTRS-VICTIM router-id=203.0.113.1 routing-table=main
+```
 
 This creates a BGP template that sets our local AS to 65534 and also sets the input filter to TC-UTRS-IN.  In addition it sets the output filter
 to TC-UTRS-VICTIM.  Any prefix that you put into the TC-UTRS-VICTIM list will be redistributed to the UTRS network for validation and use within the community.
@@ -109,13 +111,17 @@ to TC-UTRS-VICTIM.  Any prefix that you put into the TC-UTRS-VICTIM list will be
 Now we are going to configure the actual BGP session(s). We **strongly** recommend that you configure at least two UTRS sessions.  This will provide redundency and higher reliability to the system.
 
 First UTRS Route Server
-```/routing bgp connection
-add local.role=ebgp name=TC-UTRS-001 remote.address=198.51.100.1/32 .as=64512 .ttl=64 templates=TC-UTRS-TEMPLATE tcp-md5-key=CHANGEMENOW```
+```
+/routing bgp connection
+add local.role=ebgp name=TC-UTRS-001 remote.address=198.51.100.1/32 .as=64512 .ttl=64 templates=TC-UTRS-TEMPLATE tcp-md5-key=CHANGEMENOW
+```
 
 Second UTRS BGP Server Configuration
 
-```/routing bgp connection
-add local.role=ebgp name=TC-UTRS-002 remote.address=198.51.100.200/32 .as=64512 .ttl=64 templates=TC-UTRS-TEMPLATE tcp-md5-key=CHANGEMENOW```
+```
+/routing bgp connection
+add local.role=ebgp name=TC-UTRS-002 remote.address=198.51.100.200/32 .as=64512 .ttl=64 templates=TC-UTRS-TEMPLATE tcp-md5-key=CHANGEMENOW
+```
 
 You will need to change the tcp-md5-key to the key that was assigned by Team Cymru as part of your signup to the service.
 Also another **reminder** the IP addresses and ASN's used in these examples need to be changed to the correct values.
@@ -125,12 +131,16 @@ BGP sessions.  This will help provide better redudancy and fail-over should one 
 
 You can validate that you are receiving routes by using the following command
 
-```/routing/route/print where belongs-to=bgp-IP-198.51.100.1```  
+```
+/routing/route/print where belongs-to=bgp-IP-198.51.100.1
+```  
 Remember in real life you need to replace the 198.51.100.1 with the real IP for the UTRS router(s) you received from Team Cymru
 
 You can also see the total routes received by issuing the following command
 
-```/routing/stats/origin/print where route-type=8```
+```
+/routing/stats/origin/print where route-type=8
+```
 
 Here you will see that the "total-route-count" should be right around 200
 
