@@ -510,6 +510,59 @@ Populate the Address box with the 'Address' section with the IP Address of Nimbu
 
 ***
 
+## Linux or *BSD Routers - using PMACCT
+
+There are different solutions for those who run Linux or *BSD Routers.  One of the most popular sensors and collectors is [PMACCT](https://github.com/pmacct/pmacct), which is opensource.  In this example, we will only use the sensor capabilities, thus keeping the configuration minimal.
+
+### Installation
+
+On Debian:
+
+```
+apt-get install pmacct
+```
+
+On Ubuntu:
+
+```
+apt-get -y install pmacct
+```
+
+On FreeBSD:
+
+```
+pkg install net-mgmt/pmacct
+```
+
+### Configuration
+
+We will use two configuration files: *pmacctd.conf* and *pmacctd_ints.conf*. The former contains the main configuration, the latter is used to map interfaces to indexes.
+
+This is a very basic configuration for **pmacctd.conf**:
+
+```
+daemonize: true
+pcap_interfaces_map: /usr/local/etc/pmacctd_ints.conf
+aggregate: src_host, dst_host, src_port, dst_port, proto, tos
+plugins: nfprobe
+nfprobe_receiver: xxx.xxx.xxx.xxx:PPPP
+nfprobe_version: 9
+```
+
+This example is based off of FreeBSD, so the path for *pcap_interfaces_map* should be adjusted if you are on other systems.
+
+In **pmacctd_ints.conf** we map interfaces to indexes as follows:
+
+```
+ifindex=100     ifname=vlan901
+ifindex=200     ifname=vlan902
+ifindex=300     ifname=cxl1
+```
+
+The suggestion is to only list the interfaces on the edge of your network, such as towards transits, IXes or private peerings.  You could also specify the direction of the traffic you want pmacctd to map in the flow from the interfaces. You could specifcy either "in" or "out". In the examples above, the direction is not specified, meaning to consider both in and out.
+
+After preparing the configuration files, make sure you configure pmacctd to start at boot time on your system.
+
 
 
 ***
