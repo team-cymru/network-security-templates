@@ -52,7 +52,7 @@ For the most part Netflow is transmitted via UDP, for NimbusTM the default port 
 * [MikroTik Routers](#MikroTik-Routers)
     * [Command Line](#MikroTik-CLI-Configuration)
     * [Graphical User Interface](#MikroTik-GUI-Configuration)
-
+* [Linux or *BSD Routers - using PMACCT](#Linux-or-*BSD-Routers---using-PMACCT)
 
 
 
@@ -510,11 +510,11 @@ Populate the Address box with the 'Address' section with the IP Address of Nimbu
 
 ***
 
-## Linux or *BSD Routers - using PMACCT
+# Linux or *BSD Routers - using PMACCT
 
 There are different solutions for those who run Linux or *BSD Routers.  One of the most popular sensors and collectors is [PMACCT](https://github.com/pmacct/pmacct), which is opensource.  In this example, we will only use the sensor capabilities, thus keeping the configuration minimal.
 
-### Installation
+## Installation
 
 On Debian:
 
@@ -534,7 +534,7 @@ On FreeBSD:
 pkg install net-mgmt/pmacct
 ```
 
-### Configuration
+## Configuration
 
 We will use two configuration files: *pmacctd.conf* and *pmacctd_ints.conf*. The former contains the main configuration, the latter is used to map interfaces to indexes.
 
