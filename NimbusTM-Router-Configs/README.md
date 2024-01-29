@@ -12,6 +12,17 @@ Once flow exports are configured partners may access the user interface to view 
 Although we try to keep these guides as up to date and accurate as possible, they are guides. These samples may need to be modified, it is not wise to simply cut and paste without a thorough understanding of each command.
 ***
 
+
+***
+## !! TIME STAMPS / TIME ZONE IS IMPORTANT !!
+Global networks make use of syncronized time and a single global time zone.  This allows for better correlation of events from different places around the globe.
+Team Cymru makes use of UTC as the globally accepted timezone to coordinate with.
+Thus it is critically important that YOUR Flow-Exporter is configured to use UTC and have properly sync'd time source.
+We strongly recommend that your flow-exporter use a NTP synced clock source and set for UTC.  Also please make sure you do NOT have any DST Day Light Savings Time set.
+If you need a reliable NTP server, Team Cymru has a public facing server at  ntp.cymru.com
+
+***
+
 ## Common Commands 
 
 Although many vendors may differ slightly in how they implement flow technologies, there are some commands that are common enough it makes sense to define them globably. Please note the exact spelling of these commands may vary between vendors. 
